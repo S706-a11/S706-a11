@@ -16,12 +16,19 @@ jobs:
     timeout-minutes: 5
 
     steps:
+      # 1. Generates the SVG
       - name: generate pacman-contribution-graph.svg
         uses: abozanona/pacman-contribution-graph@main
         with:
           github_user_name: ${{ github.repository_owner }}
 
-      # Push the generated SVG to the output branch
+      # 2. Move file to a dist folder so the next step can find it
+      - name: Move to dist
+        run: |
+          mkdir -p dist
+          mv pacman-contribution-graph* dist/
+
+      # 3. Push the generated SVG to the output branch
       - name: push pacman-contribution-graph.svg to the output branch
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
